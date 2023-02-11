@@ -1,19 +1,43 @@
-import { login } from '@/api/user'
-import { getToken, setToken } from '@/utils/auth'
+import { getUserBaseInfo, getUserInfo, login } from '@/api/user'
+import { getToken, removeTimeStamp, removeToken, setTimeStamp, setToken } from '@/utils/auth'
 
 const state = {
-  token: getToken() || ''
+  token: getToken() || '',
+  userInfo: {}
 }
 const mutations = {
   SET_TOKEN(state, token) {
     state.token = token
+  },
+  SET_USERINFO(state, data) {
+    state.userInfo = data
+  },
+  REMOVE_USER(state) {
+    state.token = ''
+    state.userInfo = {}
+    removeToken()
+    //   删除时间戳
+    removeTimeStamp()
   }
 }
 const actions = {
+  // 登录
   async login({ commit }, body) {
     const token = await login(body)
     commit('SET_TOKEN', token)
     setToken(token)
+    // 设置时间戳
+    setTimeStamp()
+  },
+  // 获取用户信息
+  async getUserInfo({ commit }) {
+    const res = await getUserInfo()
+    const baseInfo = await getUserBaseInfo(res.userId)
+    commit('SET_USERINFO', { ...res, ...baseInfo })
+  },
+  // 退出登录
+  logOut({ commit }) {
+    commit('REMOVE_USER')
   }
 }
 export default {

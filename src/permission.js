@@ -8,13 +8,15 @@ const whiteRouter = ['/login', '/404']
 // to: 要跳转的目标路由
 // from : 跳转之前的路由
 // next : next()=>放行   next(false)=>终止跳转   next('/')=>重定向到其他路由
-router.beforeEach((to, from, next) => {
-  console.log('s')
+router.beforeEach(async(to, from, next) => {
   NProgress.start() // 开启进度条
   if (store.getters.token) {
     if (to.path === '/login') {
       next('/')
     } else {
+      if (!store.getters.userId) {
+        await store.dispatch('user/getUserInfo')
+      }
       next()
     }
   } else {

@@ -14,6 +14,11 @@ import router from './router'
 
 import '@/icons' // icon
 import '@/permission' // permission control
+import * as directives from '@/directives'
+// 注册所有指令
+Object.keys(directives).forEach(key => {
+  Vue.directive(key, directives[key])
+})
 
 /**
  * If you don't want to use mock-server
