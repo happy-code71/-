@@ -15,19 +15,19 @@ import router from './router'
 import '@/icons' // icon
 import '@/permission' // permission control
 import * as directives from '@/directives'
+import MyComponents from '@/components'
+import * as filters from '@/filters'
 // 注册所有指令
 Object.keys(directives).forEach(key => {
   Vue.directive(key, directives[key])
 })
 
-/**
- * If you don't want to use mock-server
- * you want to use MockJs for mock api
- * you can execute: mockXHR()
- *
- * Currently MockJs will be used in the production environment,
- * please remove it before going online ! ! !
- */
+// 注册所有组件
+Vue.use(MyComponents)
+// 铸注册所有过滤器
+Object.keys(filters).forEach(item => {
+  Vue.filter(item, filters[item])
+})
 
 // set ElementUI lang to EN
 Vue.use(ElementUI, { locale })

@@ -50,7 +50,17 @@ export const constantRoutes = [
     component: () => import('@/views/404'),
     hidden: true
   },
-
+  {
+    path: '/import',
+    component: Layout,
+    hidden: true, // 隐藏在左侧菜单中
+    children: [
+      {
+        path: '',
+        component: () => import('@/views/import')
+      }
+    ]
+  },
   {
     path: '/',
     component: Layout,

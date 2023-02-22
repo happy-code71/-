@@ -124,3 +124,23 @@ export function param2Obj(url) {
 export function checkTimeStamp(overTime) {
   return ((Date.now() - getTimeStamp()) / 1000) > overTime
 }
+
+/*
+* 将数据转换成树形结构
+* list: 数组数据
+* root: 父节点id
+* */
+export function tranListToTreeData(list, root) {
+  const treeList = []
+  list.forEach(item => {
+    if (item.pid === root) {
+      const children = tranListToTreeData(list, item.id)
+      if (children.length) {
+        item.children = children
+      }
+      treeList.push(item)
+    }
+  })
+  return treeList
+}
+
