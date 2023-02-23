@@ -84,8 +84,8 @@ export default {
     upload(params) {
       // api 地址：https://cloud.tencent.com/document/product/436/64960
       const cos = new COS({
-        SecretId: 'AKIDPecLnysWtzpOhjUyC9pEM3TcU6RVHn1z', // 身份识别 ID
-        SecretKey: 'iALFrCH5crra2D8m9G6h02nJYWDepkNj' // 身份密钥
+        SecretId: '', // 身份识别 ID
+        SecretKey: '' // 身份密钥
       })
       cos.putObject({
           Bucket: 'aijiejie-1307158471', // 存储通名称
