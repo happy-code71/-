@@ -16,8 +16,15 @@
           <el-table-column label="序号" type="index"/>
           <el-table-column label="姓名" prop="username" sortable="true"/>
           <el-table-column label="头像" prop="staffPhoto">
-            <template slot-scope="scope">
-              <el-avatar :src="scope.row.staffPhoto" size="medium"/>
+            <template v-slot="{row}">
+              <img
+                slot="reference"
+                v-imagerror="require('@/assets/common/bigUserHeader.png')"
+                :src="row.staffPhoto "
+                alt=""
+                style="border-radius: 50%; width: 50px; height: 50px; padding: 10px"
+                @click="showQr(row.staffPhoto)"
+              >
             </template>
           </el-table-column>
           <el-table-column label="手机号" prop="mobile"/>
@@ -59,6 +66,12 @@
       </el-card>
       <!--   新增弹层   -->
       <add-employee :show-dialog.sync="showDialog"/>
+      <!--    二维码弹层  -->
+      <el-dialog :visible.sync="showQrDialog" title="二维码">
+        <el-row justify="center" type="flex">
+          <canvas ref="qrDom"/>
+        </el-row>
+      </el-dialog>
     </div>
   </div>
 </template>
@@ -68,6 +81,7 @@ import { getUsers, delEmployee } from '@/api/employees'
 import EmployeeEnum from '@/api/constant/employees'
 import AddEmployee from '@/views/employees/components/add-employee.vue'
 import { formatDate } from '@/filters'
+import QrCode from 'qrcode'
 
 export default {
   components: { AddEmployee },
@@ -84,7 +98,8 @@ export default {
         page: 1, // 页数
         size: 10// 条数
       },
-      showDialog: false// 展示弹层
+      showDialog: false, // 展示弹层
+      showQrDialog: false // 二维码弹层
 
     }
   },
@@ -179,6 +194,17 @@ export default {
           return item[header[i]]
         })
       })
+    },
+    // 点击图片，展示二维码
+    showQr(url) {
+      if (url.trim()) { // 判断是否有图片url
+        this.showQrDialog = true // 展示弹层 => 页面更新 (页面更新是异步的)  => 此时还没有弹层
+        this.$nextTick(() => { // 本次页面更新后立即执行
+          QrCode.toCanvas(this.$refs.qrDom, url)
+        })
+      } else {
+        this.$message.warning('该用户还未上传头像')
+      }
     }
 
   }

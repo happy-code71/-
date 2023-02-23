@@ -17,6 +17,7 @@ import '@/permission' // permission control
 import * as directives from '@/directives'
 import MyComponents from '@/components'
 import * as filters from '@/filters'
+import Print from 'vue-print-nb' // 页面打印
 // 注册所有指令
 Object.keys(directives).forEach(key => {
   Vue.directive(key, directives[key])
@@ -24,6 +25,7 @@ Object.keys(directives).forEach(key => {
 
 // 注册所有组件
 Vue.use(MyComponents)
+Vue.use(Print)
 // 铸注册所有过滤器
 Object.keys(filters).forEach(item => {
   Vue.filter(item, filters[item])
