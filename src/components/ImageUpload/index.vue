@@ -88,8 +88,8 @@ export default {
         SecretKey: '' // 身份密钥
       })
       cos.putObject({
-          Bucket: 'aijiejie-1307158471', // 存储通名称
-          Region: 'ap-guangzhou', // 存储通所在地域
+          Bucket: '', // 存储通名称
+          Region: '', // 存储通所在地域
           Key: params.file.name, // 存储名字
           Body: params.file, // 上传文件对象
           StorageClass: 'STANDARD', // 上传的模式类型 直接默认 标准模式即可
