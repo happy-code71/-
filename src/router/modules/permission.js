@@ -1,6 +1,6 @@
 export default {
   path: '/permission',
-  name: 'permission',
+  name: 'permissions',
   component: () => import('@/layout'),
   children: [
     {

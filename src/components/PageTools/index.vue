@@ -2,8 +2,11 @@
   <el-card class="page-tools">
     <el-row align="middle" justify="space-between" type="flex">
       <el-col>
-        <i class="el-icon-info"/>
-        <slot name="left"/>
+        <div v-if="showBefore" class="before">
+          <i class="el-icon-info"/>
+          <!-- 定义前面得插槽 -->
+          <slot name="left"/>
+        </div>
       </el-col>
       <el-col>
         <el-row justify="end" type="flex">
@@ -14,7 +17,14 @@
   </el-card>
 </template>
 <script>
-export default {}
+export default {
+  props: {
+    showBefore: {
+      type: Boolean,
+      default: true
+    }
+  }
+}
 </script>
 <style lang="scss">
 .page-tools {

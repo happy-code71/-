@@ -1,4 +1,5 @@
 import serve from '@/utils/request'
+import request from '@/utils/request'
 
 export function login(data) {
   return serve({
@@ -21,4 +22,14 @@ export function getUserBaseInfo(id) {
   return serve({
     url: `/sys/user/${id}`
   })
+}
+
+// 给员工分配角色
+export function assignRoles(data) {
+  return request({
+    url: '/sys/user/assignRoles',
+    method: 'put',
+    data
+  })
+
 }

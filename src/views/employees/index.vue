@@ -8,7 +8,8 @@
         <template v-slot:right>
           <el-button size="small" type="warning" @click="$router.push('/import')">导入</el-button>
           <el-button size="small" type="danger" @click="exportExcel">导出</el-button>
-          <el-button size="small" type="primary" @click="showDialog = true">新增员工</el-button>
+          <el-button v-if="checkPermission('aa')" size="small" type="primary" @click="showDialog = true">新增员工
+          </el-button>
         </template>
       </page-tools>
       <el-card v-loading="loading">
@@ -47,7 +48,7 @@
               <el-button size="small" type="text">转正</el-button>
               <el-button size="small" type="text">调岗</el-button>
               <el-button size="small" type="text">离职</el-button>
-              <el-button size="small" type="text">角色</el-button>
+              <el-button size="small" type="text" @click="openShowRoleDialog(row.id)">角色</el-button>
               <el-button size="small" type="text" @click="delEmployee(row.id)">删除</el-button>
             </template>
           </el-table-column>
@@ -72,6 +73,8 @@
           <canvas ref="qrDom"/>
         </el-row>
       </el-dialog>
+      <!--   分配角色弹层   -->
+      <assign-role ref="roleDom" :show-role-dialog.sync="showRoleDialog" :user-id="userRoleId"></assign-role>
     </div>
   </div>
 </template>
@@ -82,9 +85,10 @@ import EmployeeEnum from '@/api/constant/employees'
 import AddEmployee from '@/views/employees/components/add-employee.vue'
 import { formatDate } from '@/filters'
 import QrCode from 'qrcode'
+import AssignRole from '@/views/employees/components/assign-role.vue'
 
 export default {
-  components: { AddEmployee },
+  components: { AssignRole, AddEmployee },
   data() {
     return {
       loading: false, // 加载
@@ -99,8 +103,9 @@ export default {
         size: 10// 条数
       },
       showDialog: false, // 展示弹层
-      showQrDialog: false // 二维码弹层
-
+      showQrDialog: false, // 二维码弹层
+      showRoleDialog: false, // 分配角色弹层
+      userRoleId: '' // 分配角色弹层用户ID
     }
   },
   computed: {},
@@ -205,6 +210,12 @@ export default {
       } else {
         this.$message.warning('该用户还未上传头像')
       }
+    },
+    //   开始分配角色弹层
+    async openShowRoleDialog(id) {
+      await this.$refs.roleDom.getUserRole(id)
+      this.showRoleDialog = true
+      this.userRoleId = id
     }
 
   }

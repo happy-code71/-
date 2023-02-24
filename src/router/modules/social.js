@@ -1,6 +1,6 @@
 export default {
   path: '/social',
-  name: 'social',
+  name: 'social_securitys',
   component: () => import('@/layout'),
   children: [
     {

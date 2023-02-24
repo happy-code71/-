@@ -1,5 +1,6 @@
 import { getUserBaseInfo, getUserInfo, login } from '@/api/user'
 import { getToken, removeTimeStamp, removeToken, setTimeStamp, setToken } from '@/utils/auth'
+import { resetRouter } from '@/router'
 
 const state = {
   token: getToken() || '',
@@ -34,10 +35,16 @@ const actions = {
     const res = await getUserInfo()
     const baseInfo = await getUserBaseInfo(res.userId)
     commit('SET_USERINFO', { ...res, ...baseInfo })
+    return res // 获取身上的权限
   },
   // 退出登录
   logOut({ commit }) {
     commit('REMOVE_USER')
+    //   重置路由
+    resetRouter()
+    //   清空当前路由表
+    // { root: true } : 访问全局对象
+    commit('permission/setRoutes', [], { root: true })
   }
 }
 export default {
